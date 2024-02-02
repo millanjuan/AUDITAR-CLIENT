@@ -1,0 +1,55 @@
+.homeContainer {
+  position: relative;
+  height: 100vh;
+  background-image: url('../../assets/HomeBackground.png');
+  background-size: 100%; /* Ajusta el tamaño de la imagen para cubrir completamente el contenedor */
+  background-position: center ; 
+  background-repeat: no-repeat; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 475px;
+  height: 124px;
+  margin-bottom: 200px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 20%; 
+}
+
+.newButton,
+.historyButton {
+  padding: 16px 0;
+  border-radius: 16px;
+  font-size: 18px;
+  width: 365px;
+  height: 56px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.newButton {
+  background: linear-gradient(to bottom, #22AEFF, #0288D1, #005DA5);
+  color: white;
+  border: none;
+}
+
+.newButton:hover {
+  background: linear-gradient(to bottom, #005DA5, #0288D1, #22AEFF);
+  color: white;
+}
+
+.historyButton {
+  color: white;
+  background-color: #002C5B;
+}
+
+.historyButton:hover {
+  background-color: #004080; /* Cambié el color durante el hover */
+}
