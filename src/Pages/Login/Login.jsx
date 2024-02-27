@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css"
 import { useState } from "react"
-import { useDispatch } from "react-redux";
+import logo from "../../assets/logoRegister.png";
+import { login } from "../../utils/Auth/Auth";
 
 
 const Login = () => {
   //Utils
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   //Local states
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState("");
   const [userData, setUserData] = useState({
     user: "",
     password: "",
@@ -23,35 +23,67 @@ const Login = () => {
       ...prevData,
       [name]: value,
     }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: "",
-    }));
+    setError("")
   };
 
+  const handleLogin = async () => {
+    try {
+      const data = await login(userData.user, userData.password);
+      if (!data || data.error) {
+        setError("Usuario o contraseña incorrectos.");
+      } else {
+        navigate(data.rol === "admin" ? "/dashboard" : "/home");
+      }
+    } catch (error) {
+      setError("Usuario o contraseña incorrectos.");
+    }
+  };
 
   return (
     <div className={styles.mainContainer}>
-      <h2 className={styles.title}>Iniciar Sesión</h2>
-      <form>
-        <div className={styles.inputContainer}>
+      <div className={styles.formContainer}>
+        <div className={styles.header}>
+          <img src={logo} alt="logo" className={styles.logo}/>
+          <h2 className={styles.title}>Iniciar Sesión</h2>
+        </div>
+        <form className={styles.form}>
+          <div className={styles.inputs}>
+          <div className={styles.inputContainer}>
           <span>Usuario</span>
           <input
            type="text"
            placeholder="Coloca tu usuario" 
            name="user"
+           value={userData.user}
+           onChange={handleChange}
+           className={`${styles.input} ${error && styles.error}`}
            />
 
+        </div>
+        <div className={styles.inputContainer}>
+          <span>Contraseña</span>
           <input 
-          type="text" 
+          type="password" 
           placeholder="Coloca tu contraseña"
           name="password"
+          value={userData.password}
+          onChange={handleChange}
+          className={`${styles.input} ${error && styles.error}`}
           />
         </div>
-
+          </div>
+        {error && <span className={styles.error}>{error}</span>}
+        <button 
+          type="button" 
+          className={styles.button}
+          onClick={handleLogin}
+          >
+            Ingresar
+          </button>
       </form>
+      </div>
     </div>
   )
 }
 
-export default Login
+export default Login;

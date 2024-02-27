@@ -1,0 +1,108 @@
+.mainContainer{
+    display: flex;
+    background: linear-gradient(180deg, #22AEFF 0%, #0288D1 50%, #005DA5 100%);
+    justify-content: center;
+    height: auto;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 10px;
+    height: 35%;
+}
+.title{
+    font-size: 51.2px;
+    font-weight: 500;
+    line-height: 61.96px;
+}
+.logo{
+    width: 90px;
+    height: 90px;
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    width: 497px;
+    height: 606px;
+    margin: 20px 0px;
+    gap: 10px;
+}
+.form{
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around
+}
+.inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 60%;
+}
+.inputContainer{
+    width: 365px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inputContainer span {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24.2px;
+}
+
+.input{
+    width: 365px;
+    height: 56px;
+    border-radius: 8px;
+    border: 1px solid #BDBDBD;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24.2px;
+    padding-left: 10px;
+}
+
+
+.button{
+    width: 365px;
+    height: 56px;
+    border-radius: 16px;
+    padding: 10px 20px;
+    background-color: #B3E5FC;
+    border: none;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24.2px;
+    margin-bottom: 15px;
+}
+.button:hover{
+    background-color: #005DA5;
+    cursor: pointer;
+    color: white;
+}
+.formContainer span.error {
+    font-size: 14px;
+    color: #ff0000;
+    margin-top: 0px; 
+    margin-bottom: 0px;
+  }
+
+  .error {
+    border-color: #ff0000; 
+  }
