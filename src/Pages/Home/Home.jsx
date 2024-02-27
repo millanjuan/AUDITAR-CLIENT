@@ -7,7 +7,7 @@ const Home = () => {
     <div className={styles.homeContainer}>
         <img src={logo} alt="logo" className={styles.logo}/>
         <div className={styles.buttonContainer}>
-        <Link to='/inspeccion'>
+        <Link to='/NuevaInspeccion'>
           <button className={styles.newButton}>+ Nueva Inspección</button>
         </Link>
         <Link to='/historial'>
