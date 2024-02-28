@@ -1,10 +1,10 @@
 .homeContainer {
   position: relative;
   height: 100vh;
-  background-image: url('../../assets/HomeBackground.png');
+  background-image: url("../../assets/HomeBackground.png");
   background-size: 100%; /* Ajusta el tamaño de la imagen para cubrir completamente el contenedor */
-  background-position: center ; 
-  background-repeat: no-repeat; 
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 20%; 
+  gap: 20%;
 }
 
 .newButton,
@@ -31,23 +31,26 @@
   font-size: 18px;
   width: 365px;
   height: 56px;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.6s ease, color 0.6s ease;
 }
 
 .newButton {
-  background: linear-gradient(to bottom, #22AEFF, #0288D1, #005DA5);
+  background: linear-gradient(to bottom, #22aeff, #0288d1, #005da5);
   color: white;
   border: none;
+  cursor: pointer;
 }
 
 .newButton:hover {
-  background: linear-gradient(to bottom, #005DA5, #0288D1, #22AEFF);
+  background: linear-gradient(to bottom, #005da5, #0288d1, #22aeff);
   color: white;
 }
 
 .historyButton {
   color: white;
-  background-color: #002C5B;
+  background-color: #002c5b;
+  cursor: pointer;
+  border: none;
 }
 
 .historyButton:hover {

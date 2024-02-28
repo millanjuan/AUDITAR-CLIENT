@@ -1,11 +1,7 @@
 // Función para validar los datos del formulario de registro
-export const validateRegister = (registerData, password) => {
+export const validateRegister = (registerData, password2) => {
     const errors = {};
   
-    // Validar si las contraseñas coinciden
-    if (password.password1 !== password.password2) {
-      errors.password2 = "Las contraseñas no coinciden";
-    }
   
     // Validar si el campo de usuario está vacío
     if (!registerData.username.trim()) {
@@ -28,8 +24,12 @@ export const validateRegister = (registerData, password) => {
     }
   
     // Validar si el campo de contraseña está vacío
-    if (!password.password1.trim()) {
-      errors.password1 = "La contraseña es requerida";
+    if (!registerData.password.trim()) {
+      errors.password = "La contraseña es requerida";
+    }
+
+    if (registerData.password !== password2) {
+      errors.password = "Las contraseñas deben ser iguales"
     }
   
     return errors;

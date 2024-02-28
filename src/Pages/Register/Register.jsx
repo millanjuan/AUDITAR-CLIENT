@@ -3,19 +3,17 @@ import styles from "./Register.module.css";
 import logo from "../../assets/logoRegister.png";
 import { validateRegister } from "./validation";
 import {register} from "../../utils/Auth/Auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
     password: "",
   });
-  const [password, setPassword] = useState({
-    password1: "",
-    password2: "",
-  })
+  const [password2, setPassword2] = useState("")
   const [errors, setErrors] = useState({});
-
   //Handle Functions
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -30,11 +28,8 @@ const Register = () => {
     };
 
     const handlePasswordChange = (e) => {
-      const {name, value} = e.target;
-      setPassword((prevData) => ({
-        ...prevData,
-        [name]:value,
-      }));
+      const {value} = e.target;
+      setPassword2(value);
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: "",
@@ -42,26 +37,18 @@ const Register = () => {
     }
 
     const handleRegister = async () => {
-    const validationErrors = validateRegister(registerData, password);
-    if (Object.keys(validationErrors).length === 0) {
-      if (!validationErrors.password1 && !validationErrors.password2) {
-        setRegisterData((prevData) => ({
-          ...prevData,
-          password: password.password1,
-        }));
+      const validationErrors = validateRegister(registerData, password2);
+      if (Object.keys(validationErrors).length === 0) {
+        try {
+          const data = await register(registerData);
+          navigate("/inicio", data);
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        setErrors(validationErrors);
       }
-      
-      try {
-        const data = await register(registerData);
-      } catch (error) {
-        console.log(error.message);
-      }
-    } else {
-      // Mostrar errores de validación
-      setErrors(validationErrors);
-    }
     };
-
   return (
     <div className={styles.mainContainer}>
       <div className={styles.formContainer}>
@@ -103,9 +90,9 @@ const Register = () => {
             <input 
             type="password" 
             placeholder="Escribe tu contraseña"
-            name="password1"
-            value={password.password1}
-            onChange={handlePasswordChange}
+            name="password"
+            value={registerData.password}
+            onChange={handleChange}
             className={`${styles.input} ${
               errors.password1 && styles.inputError
             }`}
@@ -118,7 +105,7 @@ const Register = () => {
             type="password" 
             placeholder="Confirma tu contraseña"
             name="password2"
-            value={password.password2}
+            value={password2}
             onChange={handlePasswordChange}
             className={`${styles.input} ${
               errors.password2 && styles.inputError
@@ -128,11 +115,17 @@ const Register = () => {
           </div>
           <button 
           type="button" 
-          onClick={() => handleRegister()}
+          onClick={handleRegister}
           className={styles.button}
           >
             Registrarse
           </button>
+          <div className={styles.footer}>
+            <p>Ya tienes cuenta?</p>
+            <Link to="/ingresar" className={styles.link}>
+              <p>Iniciar sesión</p>
+            </Link>
+          </div>
         </form>
 
       </div>

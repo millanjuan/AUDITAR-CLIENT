@@ -1,20 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import styles from "./Login.module.css"
-import { useState } from "react"
+import { useNavigate, Link } from "react-router-dom";
+import styles from "./Login.module.css";
+import { useState } from "react";
 import logo from "../../assets/logoRegister.png";
 import { login } from "../../utils/Auth/Auth";
-
+import { useEffect } from "react";
 
 const Login = () => {
   //Utils
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    token && navigate("/inicio");
+  }, [token]);
 
   //Local states
   const [error, setError] = useState("");
   const [userData, setUserData] = useState({
     user: "",
     password: "",
-  })
+  });
 
   //Handle functions
   const handleChange = (e) => {
@@ -23,7 +28,7 @@ const Login = () => {
       ...prevData,
       [name]: value,
     }));
-    setError("")
+    setError("");
   };
 
   const handleLogin = async () => {
@@ -32,7 +37,7 @@ const Login = () => {
       if (!data || data.error) {
         setError("Usuario o contraseña incorrectos.");
       } else {
-        navigate(data.rol === "admin" ? "/dashboard" : "/home");
+        navigate(data.rol === "admin" ? "/dashboard" : "/inicio");
       }
     } catch (error) {
       setError("Usuario o contraseña incorrectos.");
@@ -43,47 +48,48 @@ const Login = () => {
     <div className={styles.mainContainer}>
       <div className={styles.formContainer}>
         <div className={styles.header}>
-          <img src={logo} alt="logo" className={styles.logo}/>
+          <img src={logo} alt="logo" className={styles.logo} />
           <h2 className={styles.title}>Iniciar Sesión</h2>
         </div>
         <form className={styles.form}>
           <div className={styles.inputs}>
-          <div className={styles.inputContainer}>
-          <span>Usuario</span>
-          <input
-           type="text"
-           placeholder="Coloca tu usuario" 
-           name="user"
-           value={userData.user}
-           onChange={handleChange}
-           className={`${styles.input} ${error && styles.error}`}
-           />
-
-        </div>
-        <div className={styles.inputContainer}>
-          <span>Contraseña</span>
-          <input 
-          type="password" 
-          placeholder="Coloca tu contraseña"
-          name="password"
-          value={userData.password}
-          onChange={handleChange}
-          className={`${styles.input} ${error && styles.error}`}
-          />
-        </div>
+            <div className={styles.inputContainer}>
+              <span>Usuario</span>
+              <input
+                type="text"
+                placeholder="Coloca tu usuario"
+                name="user"
+                value={userData.user}
+                onChange={handleChange}
+                className={`${styles.input} ${error && styles.error}`}
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <span>Contraseña</span>
+              <input
+                type="password"
+                placeholder="Coloca tu contraseña"
+                name="password"
+                value={userData.password}
+                onChange={handleChange}
+                className={`${styles.input} ${error && styles.error}`}
+              />
+            </div>
           </div>
-        {error && <span className={styles.error}>{error}</span>}
-        <button 
-          type="button" 
-          className={styles.button}
-          onClick={handleLogin}
-          >
+          {error && <span className={styles.error}>{error}</span>}
+          <button type="button" className={styles.button} onClick={handleLogin}>
             Ingresar
           </button>
-      </form>
+          <div className={styles.footer}>
+            <p>Nuevo en AUDITAR?</p>
+            <Link to="/registrarse" className={styles.link}>
+              <p>Regístrate</p>
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

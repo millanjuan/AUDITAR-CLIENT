@@ -1,5 +1,6 @@
 import { 
     GET_CATEGORY,
+    SET_SELECTED_OPTION
     } from "./actions-types";
 import axios from "axios";
 
@@ -18,3 +19,12 @@ export const getAllCategories = () => {
         }
     }
 };
+
+export const setSelectedOption = (option) => {
+    return function (dispatch){
+      dispatch({
+        type:SET_SELECTED_OPTION,
+        payload:option,
+      })
+    }
+  }

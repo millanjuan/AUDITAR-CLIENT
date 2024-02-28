@@ -1,68 +1,70 @@
 .landingContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to top, #22AEFF, #0288D1, #005DA5);
-    height: 100vh;
-  }
-  
-  .logo {
-    width: 475px;
-    height: 124px;
-    margin-top: 100px;
-  }
-  
-  .textContainer {
-    max-width: 917px; 
-    padding: 20px ; 
-  }
-  
-  .text {
-    font-weight: 400;
-    font-size: 32px;
-    text-align: center;
-    line-height: 1.2;
-    color: white;
-  }
-  
-  .buttonContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-top: 50px;
-  }
-  
-  .loginButton,
-  .registerButton {
-    padding: 16px 0;
-    border-radius: 16px;
-    font-size: 18px;
-    width: 365px;
-    height: 56px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-  
-  .loginButton {
-    background: linear-gradient(to bottom, #22AEFF, #0288D1, #005DA5);
-    color: white;
-    border: none;
-    transition: background 0.3s ease;
-  }
-  
-  .loginButton:hover {
-    background: linear-gradient(to bottom, #005DA5, #0288D1, #22AEFF);
-    color: white;
-  }
-  
-  .registerButton {
-    color: #002C5B;
-    border: 1px solid #002C5B;
-    background-color: white;
-  }
-  
-  .registerButton:hover {
-    color: white;
-    background-color: #02275C; /* Cambié el color durante el hover */
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to top, #22aeff, #0288d1, #005da5);
+  height: 100vh;
+}
+
+.logo {
+  width: 475px;
+  height: 124px;
+  margin-top: 100px;
+}
+
+.textContainer {
+  max-width: 917px;
+  padding: 20px;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 32px;
+  text-align: center;
+  line-height: 1.2;
+  color: white;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.loginButton,
+.registerButton {
+  padding: 16px 0;
+  border-radius: 16px;
+  font-size: 18px;
+  width: 365px;
+  height: 56px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.loginButton {
+  background: linear-gradient(to bottom, #22aeff, #0288d1, #005da5);
+  color: white;
+  border: none;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.loginButton:hover {
+  background: linear-gradient(to bottom, #005da5, #0288d1, #22aeff);
+  color: white;
+}
+
+.registerButton {
+  color: #002c5b;
+  border: 1px solid #002c5b;
+  background-color: white;
+  cursor: pointer;
+}
+
+.registerButton:hover {
+  color: white;
+  background-color: #02275c; /* Cambié el color durante el hover */
+}
