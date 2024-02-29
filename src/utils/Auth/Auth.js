@@ -61,8 +61,6 @@ export async function login(username, password) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(expirationDate, expirationDate.getTime()); // Guardar la fecha de expiración en milisegundos
 
-      localStorage.setItem("rol", response.data.user.rol);
-
       // Establecer temporizador para la alerta de expiración
       const alertTime = new Date(expirationDate.getTime() - 60000); // Mostrar alerta 1 minuto antes de la expiración
       setTimeout(() => {

@@ -1,0 +1,22 @@
+.header {
+  width: 100%;
+  background-color: red;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  height: 66px;
+}
+
+.mainContainer {
+  width: 95%;
+  background-color: blue;
+  height: 100%;
+}
+
+.logoContainer {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

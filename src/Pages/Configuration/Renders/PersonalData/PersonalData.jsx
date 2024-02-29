@@ -23,7 +23,7 @@ const PersonalData = () => {
     cellphone: "",
     profilePicture: "",
   });
-  const [emailError, setEmailError] = useState(false); //
+  const [emailError, setEmailError] = useState(""); //
   const [editablePhoto, setEditablePhoto] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 

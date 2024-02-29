@@ -37,7 +37,7 @@ const Login = () => {
       if (!data || data.error) {
         setError("Usuario o contraseña incorrectos.");
       } else {
-        navigate(data.rol === "admin" ? "/dashboard" : "/inicio");
+        navigate("/inicio");
       }
     } catch (error) {
       setError("Usuario o contraseña incorrectos.");
