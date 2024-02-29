@@ -39,12 +39,8 @@ export async function register({ username, email, password }) {
       throw new Error(response.data.message || "Error de registro");
     }
   } catch (error) {
-    swal({
-      title: "Error, por favor intenta mas tarde",
-      icon: "warning",
-      button: null,
-    });
     console.log(error);
+    throw error;
   }
 }
 

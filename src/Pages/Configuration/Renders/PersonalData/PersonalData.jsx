@@ -23,9 +23,9 @@ const PersonalData = () => {
     cellphone: "",
     profilePicture: "",
   });
-  const [emailError, setEmailError] = useState(""); // Estado para el mensaje de error de email
-  const [editablePhoto, setEditablePhoto] = useState(false); // Estado para indicar si se está editando la foto
-  const [selectedImage, setSelectedImage] = useState(null); // Estado para la imagen seleccionada
+  const [emailError, setEmailError] = useState(false); //
+  const [editablePhoto, setEditablePhoto] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // Función para manejar cambios en la imagen seleccionada
   const handleImageChange = (image) => {
