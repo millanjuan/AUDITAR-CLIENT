@@ -1,22 +1,28 @@
 .header {
   width: 100%;
-  background-color: red;
   justify-self: center;
   display: flex;
   justify-content: center;
   height: 66px;
+  background: linear-gradient(180deg, #22aeff 0%, #0288d1 47.97%, #005da5 100%);
 }
 
 .mainContainer {
   width: 95%;
-  background-color: blue;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .logoContainer {
-  width: 10%;
+  width: 20%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.navbarContainer {
+  width: 90%;
 }

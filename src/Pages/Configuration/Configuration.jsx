@@ -2,8 +2,10 @@ import styles from "./Configuration.module.css";
 import Sidebar from "./Sidebar/Sidebar";
 import PersonalData from "./Renders/PersonalData/PersonalData";
 import Security from "./Renders/Security/Security";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { setSelectedOption } from "../../redux/actions";
 
 const Configuration = () => {
   const selectedOption = useSelector((state) => state.selectedOption);
@@ -13,12 +15,17 @@ const Configuration = () => {
   const logOut = "logOut";
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logOutSesion = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("rol");
+    localStorage.removeItem("expirationTime");
     navigate("/");
   };
+
+  useEffect(() => {
+    dispatch(setSelectedOption(personalData));
+  }, [dispatch]);
 
   const renderContent = (option) => {
     switch (option) {

@@ -1,15 +1,21 @@
-import { Link } from "react-router-dom"
-import styles from "./CategoryCard.module.css"
+import { Link } from "react-router-dom";
+import styles from "./CategoryCard.module.css";
+import { getCategoryById, setInspectionState } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
-const CategoryCard = ({ name, image }) => {
+const CategoryCard = ({ id, name, image }) => {
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const handleSetCategory = (id) => {
+    dispatch(setInspectionState("quizz"));
+    dispatch(getCategoryById(id, token));
+  };
   return (
-    <Link className={styles.wrapperLinks}>
-        <div className={styles.cardContainer}>
-        <img src={image} alt="Card Image" className={styles.cardImage}/>
-        <h2>{name}</h2>
+    <div className={styles.cardContainer} onClick={() => handleSetCategory(id)}>
+      <img src={image} alt="Card Image" className={styles.cardImage} />
+      <h2>{name}</h2>
     </div>
-    </Link>
-  )
-}
+  );
+};
 
-export default CategoryCard
+export default CategoryCard;

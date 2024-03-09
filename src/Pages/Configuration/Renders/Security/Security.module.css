@@ -69,6 +69,7 @@
   width: 116px;
   height: 56px;
   padding: 10px 20px;
+  transition: ease-in 0.2s;
 }
 .button:hover {
   background-color: #005da5;

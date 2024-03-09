@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -7,4 +8,22 @@ html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #22aeff 0%, #0288d1 47.97%, #005da5 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  z-index: 9999;
+}
+
+.app-container {
+  position: relative;
 }

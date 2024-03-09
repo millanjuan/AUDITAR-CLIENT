@@ -153,6 +153,7 @@
   line-height: 24px;
   letter-spacing: 0em;
   cursor: pointer;
+  transition: ease-in 0.2s;
 }
 .saveButton:hover {
   background-color: #005da5;

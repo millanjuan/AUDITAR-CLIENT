@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  width: 100%;
+}
+
+.nav {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+  list-style-type: none;
+  width: 90%;
+}
+
+.navItem {
+  margin: 0;
+  padding: 0;
+  padding: 21px 25px;
+  height: 80%;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.link:hover {
+  background-color: rgba(0, 0, 0, 0.069);
+}
