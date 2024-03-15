@@ -13,10 +13,14 @@ import Header from "./Components/Header/Header";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import Footer from "./Components/Footer/Footer";
 import swal from "sweetalert";
+import Loading from "./Components/Loading/Loading";
+import InspectionHistory from "./Pages/InspectionHistory/InspectionHistory";
+import InspectionDetail from "./Pages/InpectionDetail/InspectionDetail";
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const isAuthenticated = localStorage.getItem("token") !== null;
   const [showAccessDenied, setShowAccessDenied] = useState(false);
 
@@ -40,32 +44,39 @@ function App() {
   const shouldRenderHeader = !unauthenticatedRoutes.includes(location.pathname);
   const shouldRenderFooter = !unauthenticatedRoutes.includes(location.pathname);
 
-  const checkExpirationTime = () => {
-    const token = localStorage.getItem("token");
-    const expirationTime = localStorage.getItem("expirationTime");
-
-    if (token && expirationTime) {
-      const currentTime = new Date().getTime();
-      const expiration = new Date(expirationTime).getTime();
-
-      if (currentTime >= expiration && location.pathname !== "/ingresar") {
-        // Token ha expirado, eliminarlo del local storage
-        localStorage.removeItem("token");
-        localStorage.removeItem("expirationTime");
-        navigate("/ingresar");
-        return false;
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("expirationTime");
-      }
-    } else {
-      // No hay token o expirationTime en el local storage
-      return true;
-    }
-  };
   useEffect(() => {
+    const checkExpirationTime = () => {
+      const token = localStorage.getItem("token");
+      const expirationTime = localStorage.getItem("expirationTime");
+
+      if (token && expirationTime) {
+        const currentTime = new Date().getTime();
+        const expiration = new Date(expirationTime).getTime();
+
+        if (currentTime >= expiration && location.pathname !== "/ingresar") {
+          // Token ha expirado, eliminarlo del local storage
+          localStorage.removeItem("token");
+          localStorage.removeItem("expirationTime");
+          navigate("/ingresar");
+          return false;
+        } else if (currentTime >= expiration) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("expirationTime");
+        }
+      } else {
+        // No hay token o expirationTime en el local storage
+        return true;
+      }
+    };
+
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 400); // Simular una carga de 2 segundos
+
     // Ejecutar checkExpirationTime cuando cambie la ubicación
     checkExpirationTime();
+
+    return () => clearTimeout(timeout);
   }, [location.pathname, navigate]);
 
   // Mostrar mensaje de acceso denegado
@@ -84,18 +95,29 @@ function App() {
     }
   }, [showAccessDenied]);
 
+  useEffect(() => {
+    setLoading(true);
+  }, [location.pathname]);
+
   return (
     <div className="app-container">
       {shouldRenderHeader && <Header />}
-      <Routes>
-        <Route path="/configuracion" element={<Configuration />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/registrarse" element={<Register />} />
-        <Route path="/inicio" element={<Home />} />
-        <Route path="/nuevaInspeccion" element={<NewInspection />} />
-        <Route path="/ingresar" element={<Login />} />
-        <Route path="/panel-de-administrador" element={<AdminDashboard />} />
-      </Routes>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Routes>
+          <Route path="/configuracion" element={<Configuration />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/registrarse" element={<Register />} />
+          <Route path="/inicio" element={<Home />} />
+          <Route path="/nuevaInspeccion" element={<NewInspection />} />
+          <Route path="/ingresar" element={<Login />} />
+          <Route path="/panel-de-administrador" element={<AdminDashboard />} />
+          <Route path="/historial" element={<InspectionHistory />} />
+          <Route path="/historial/:id" element={<InspectionDetail />} />
+        </Routes>
+      )}
+
       {shouldRenderFooter && <Footer />}
       {showAccessDenied && <div className="overlay"></div>}
     </div>

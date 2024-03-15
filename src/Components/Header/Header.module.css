@@ -26,3 +26,28 @@
 .navbarContainer {
   width: 90%;
 }
+
+.menuContainer {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .mainContainer {
+    justify-content: space-between;
+  }
+  .logoContainer {
+    justify-content: center;
+  }
+  .navbarContainer {
+    display: none; /* Ocultar la barra de navegación en pantallas pequeñas */
+  }
+
+  .menuContainer {
+    display: block; /* Mostrar el menú en pantallas pequeñas */
+    width: 20%; /* Ajustar el ancho del menú según sea necesario */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

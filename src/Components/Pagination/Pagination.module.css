@@ -1,0 +1,27 @@
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  margin: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #dcdcdc;
+}
+
+.current {
+  background: linear-gradient(180deg, #22aeff 0%, #0288d1 47.97%, #005da5 100%);
+  color: #fff;
+  padding: 8px 12px;
+  margin: 0 4px;
+  border-radius: 4px;
+}

@@ -14,17 +14,17 @@
 }
 
 .title {
-  font-size: 36px; /* Modificado: Tamaño de la fuente reducido */
+  font-size: 36px;
   font-weight: 400;
-  line-height: 1.5; /* Modificado: Espacio entre líneas ajustado */
+  line-height: 1.5;
   letter-spacing: 0em;
   color: #212121;
 }
 
 .subtitle {
-  font-size: 24px; /* Modificado: Tamaño de la fuente reducido */
+  font-size: 24px;
   font-weight: 400;
-  line-height: 1.5; /* Modificado: Espacio entre líneas ajustado */
+  line-height: 1.5;
   letter-spacing: 0em;
   color: #757575;
 }
@@ -389,4 +389,14 @@
 .icon {
   font-size: 18px;
   align-self: center;
+}
+.negativeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 40px;
+}
+.negativeContainer p {
+  color: red;
+  font-size: 15px;
 }

@@ -6,28 +6,34 @@ import SignatureCanvas from "react-signature-canvas";
 import { validateForm } from "./validation";
 import Swal from "sweetalert2";
 import loading from "../../assets/loading.gif";
-import { setFormData } from "../../redux/actions";
+import { setFormData, setPdfData } from "../../redux/actions";
+import axios from "axios";
+import { Document, Page, PDFViewer, pdf } from "@react-pdf/renderer";
+import InspectionPdf from "../InspectionPdf/InspectionPdf";
 
 const cloudinaryCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const cloudinaryUploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
-const cloudinaryApiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
+const backUrl = import.meta.env.VITE_BACK_URL;
+const token = localStorage.getItem("token");
 
 const Quizz = () => {
   const dispatch = useDispatch();
   //STATES
+  const inspection = useSelector((state) => state.pdfData);
   const category = useSelector((state) => state.category);
-  console.log(category);
   const formData = useSelector((state) => state.formData);
-  const [days, setDays] = useState("");
+  const [pdfBlob, setPdfBlob] = useState(null);
+  const [pdf1, setPdf1] = useState(null);
+  const [days, setDays] = useState(null);
   const [error, setError] = useState();
   const [answers, setAnswers] = useState({
-    formId: category && category.id,
     data:
       category && category.form
         ? category.form.map((question) => ({
             answer: null,
             activeIndex: null,
             observation: "",
+            negative: false,
           }))
         : [],
   });
@@ -39,10 +45,10 @@ const Quizz = () => {
   const inspectorSign1Ref = useRef();
   const inspectorSign2Ref = useRef();
   const ownerSignRef = useRef();
+  const mainContainerRef = useRef();
 
   useEffect(() => {
     setAnswers({
-      formId: category && category.id,
       data:
         category && category.form
           ? category.form.map((question) => ({
@@ -55,8 +61,8 @@ const Quizz = () => {
   }, [category]);
 
   //HANDLE FUNCTIONS
-  const handleSaveDays = (number) => {
-    setDays(number);
+  const handleSaveDays = (e) => {
+    setDays(e.target.value);
   };
 
   const handleSaveSignatures = async () => {
@@ -80,11 +86,11 @@ const Quizz = () => {
       });
     };
 
-    const showSuccess = () => {
+    const showSuccess = (text) => {
       Swal.fire({
         title: "¡Listo!",
         icon: "success",
-        text: "Las firmas se guardaron con éxito.",
+        text: text,
       });
     };
 
@@ -113,24 +119,19 @@ const Quizz = () => {
         [signatureKey]: cloudinaryData.secure_url,
       }));
     };
-    console.log(signatures);
-
     if (!inspectorSign1Ref.current || !ownerSignRef.current) {
       showError("Por favor completa las firmas obligatorias");
       return;
     }
-
     showLoading();
-
     try {
       await Promise.all([
         uploadSignatureToCloudinary("inspectorSign1", inspectorSign1Ref),
         uploadSignatureToCloudinary("inspectorSign2", inspectorSign2Ref),
         uploadSignatureToCloudinary("ownerSign", ownerSignRef),
       ]);
-
       Swal.close();
-      showSuccess();
+      showSuccess("Las firmas se guardaron con exito.");
     } catch (error) {
       console.error("Error al subir las imágenes:", error);
       showError(
@@ -146,11 +147,17 @@ const Quizz = () => {
 
       if (!currentAnswer) return;
 
+      let isNegative = false;
+      if (answerIndex === 1) {
+        isNegative = true;
+      }
+
       if (currentAnswer.activeIndex === answerIndex) {
         updatedAnswers.data[questionIndex] = {
           ...currentAnswer,
           answer: null,
           activeIndex: null,
+          negative: false,
         };
       } else {
         if (currentAnswer.activeIndex !== null) {
@@ -164,6 +171,7 @@ const Quizz = () => {
           ...currentAnswer,
           answer: answerIndex,
           activeIndex: answerIndex,
+          negative: isNegative,
         };
       }
       return updatedAnswers;
@@ -200,17 +208,89 @@ const Quizz = () => {
             inspectorSign1: signatures.inspectorSign1,
             inspectorSign2: signatures.inspectorSign2,
             ownerSign: signatures.ownerSign,
+            days: days,
           })
         );
-        console.log(formData);
+        dispatch(
+          setPdfData({
+            companyName: formData.companyName,
+            autorizationNumber: formData.companyAddress,
+            fullname: formData.fullname,
+            companyAddress: formData.companyAddress,
+            identity: formData.identity,
+            inspectionDate: formData.inspectionDate,
+            inspectionTime: formData.inspectionTime,
+            cellphone: formData.cellphone,
+            email: formData.email,
+            category: category,
+            form: answers,
+            inspectorSign1: signatures.inspectorSign1,
+            inspectorSign2: signatures.inspectorSign2,
+            ownerSign: signatures.ownerSign,
+            days: days,
+          })
+        );
+        const updatedFormData = {
+          ...formData,
+          form: JSON.stringify(answers),
+          inspectorSign1: signatures.inspectorSign1,
+          inspectorSign2: signatures.inspectorSign2,
+          ownerSign: signatures.ownerSign,
+          days: days,
+        };
+        console.log(updatedFormData);
+        const response = await axios.post(
+          `${backUrl}/inspection/new`,
+          updatedFormData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 201) {
+          Swal.fire({
+            title: "¡Listo!",
+            icon: "success",
+            text: "Inspección creada correctamente.",
+          });
+          setPdf1(null);
+          setPdfBlob(null);
+        } else {
+          showError(
+            "Hubo un problema al subir la inspección, intenta nuevamente."
+          );
+        }
       } catch (error) {
-        console.error("Error al subir las imágenes:", error);
+        console.error("Error al subir la inspección:", error);
+        showError(
+          "Hubo un problema al subir la inspección, intenta nuevamente."
+        );
       }
     } else {
       setError(validationErrors);
-      showError(error);
+      showError("Por favor, completa correctamente todos los campos.");
     }
   };
+
+  const handlePdf = async () => {
+    console.log(inspection);
+    const MyDocument = <InspectionPdf inspection={inspection} />;
+    const blob = await pdf(MyDocument).toBlob();
+    setPdfBlob(blob);
+  };
+  const handleDownloadPdf = () => {
+    if (pdfBlob) {
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "inspection.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.header}>
@@ -225,23 +305,10 @@ const Quizz = () => {
         <p className={styles.statement}>{category.statement}</p>
       </div>
       <div className={styles.body}>
-        <div>
-          {category.form.negative &&
-            category.form.negative
-              .split("\n")
-              .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
-        </div>
         {category.form &&
           category.form.map((question, questionIndex) => (
             <div className={styles.questionContainer} key={question.pregunta}>
               <span className={styles.question}>{question.pregunta}</span>
-              {question.negative && (
-                <div className={styles.negative}>
-                  {question.negative.split("\n").map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-                </div>
-              )}
               {question.puntos && (
                 <ul className={styles.points}>
                   {question.puntos.map((point, pointIndex) => (
@@ -299,13 +366,20 @@ const Quizz = () => {
                     <textarea
                       type="text"
                       className={styles.textArea}
-                      placeholder="Ingrese las observaciones correspondientes"
+                      placeholder="Ingrese las observaciones correspondientes."
                       value={answers?.data[questionIndex]?.observation}
                       onChange={(e) =>
                         handleObservationChange(questionIndex, e.target.value)
                       }
                     />
                   )}
+                </div>
+              )}
+              {question.negative && answers.data[questionIndex]?.negative && (
+                <div className={styles.negativeContainer}>
+                  {question.negative.split("\n").map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
                 </div>
               )}
             </div>
@@ -401,6 +475,7 @@ const Quizz = () => {
           <input
             type="text"
             className={styles.finalInput}
+            value={days}
             name="days"
             onChange={handleSaveDays}
           />
@@ -409,12 +484,15 @@ const Quizz = () => {
           </span>
         </div>
         <div className={styles.quizzButtons}>
-          <button className={styles.sendButton}>
+          <button className={styles.sendButton} onClick={handlePdf}>
             <BsSend className={styles.icon} />
             Enviar correo
           </button>
           <button className={styles.saveButton} onClick={handleSubmit}>
-            Guardar y salir
+            Finalizar
+          </button>
+          <button className={styles.saveButton} onClick={handleDownloadPdf}>
+            DESCARGAR
           </button>
         </div>
       </div>

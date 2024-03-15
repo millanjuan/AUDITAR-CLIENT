@@ -1,18 +1,28 @@
 import styles from "./Home.module.css";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
   return (
     <div className={styles.homeContainer}>
       <img src={logo} alt="logo" className={styles.logo} />
       <div className={styles.buttonContainer}>
-        <Link to="/NuevaInspeccion">
-          <button className={styles.newButton}>+ Nueva Inspección</button>
-        </Link>
-        <Link to="/historial">
-          <button className={styles.historyButton}>Historial</button>
-        </Link>
+        <button
+          className={styles.newButton}
+          onClick={() => handleNavigate("/nuevaInspeccion")}
+        >
+          + Nueva Inspección
+        </button>
+        <button
+          className={styles.historyButton}
+          onClick={() => handleNavigate("/historial")}
+        >
+          Historial
+        </button>
       </div>
     </div>
   );

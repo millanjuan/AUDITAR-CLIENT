@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CategoryCards from "../../Components/CategoryCards/CategoryCards";
 import { getAllCategories } from "../../redux/actions";
 import styles from "./Category.module.css";
-import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const token = localStorage.getItem("token");

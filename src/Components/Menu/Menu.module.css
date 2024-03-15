@@ -1,0 +1,14 @@
+.menuIcon {
+  color: white;
+  font-size: 20px;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+}
+.button:hover {
+  background-color: rgba(0, 0, 0, 0.069);
+  cursor: pointer;
+}

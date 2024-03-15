@@ -35,3 +35,25 @@
   line-height: 17px;
   letter-spacing: 0em;
 }
+
+@media only screen and (max-width: 768px) {
+  .mainContainer {
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .footerImage {
+    width: 140px;
+    height: 61px;
+  }
+
+  .textContainer {
+    margin-top: 10px;
+  }
+
+  .title,
+  .text {
+    font-size: 10px;
+    line-height: 15px;
+  }
+}

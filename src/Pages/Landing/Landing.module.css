@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   background: linear-gradient(to top, #22aeff, #0288d1, #005da5);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .logo {
@@ -67,4 +67,50 @@
 .registerButton:hover {
   color: white;
   background-color: #02275c; /* Cambié el color durante el hover */
+}
+
+@media only screen and (max-width: 768px) {
+  .logo {
+    width: 300px; /* Reducir tamaño de logo para pantallas más pequeñas */
+    height: 78px;
+    margin-top: 50px; /* Ajustar margen superior */
+  }
+
+  .text {
+    font-size: 24px; /* Reducir tamaño de texto para pantallas más pequeñas */
+  }
+
+  .buttonContainer {
+    margin-top: 30px; /* Ajustar margen superior para botones */
+  }
+
+  .loginButton,
+  .registerButton {
+    width: 280px; /* Reducir ancho de botones para pantallas más pequeñas */
+    height: 48px; /* Reducir altura de botones para pantallas más pequeñas */
+    font-size: 16px; /* Reducir tamaño de fuente para botones */
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .logo {
+    width: 200px; /* Reducir tamaño de logo para pantallas más pequeñas */
+    height: 52px;
+    margin-top: 30px; /* Ajustar margen superior */
+  }
+
+  .text {
+    font-size: 20px; /* Reducir tamaño de texto para pantallas más pequeñas */
+  }
+
+  .buttonContainer {
+    margin-top: 20px; /* Ajustar margen superior para botones */
+  }
+
+  .loginButton,
+  .registerButton {
+    width: 200px; /* Reducir ancho de botones para pantallas más pequeñas */
+    height: 40px; /* Reducir altura de botones para pantallas más pequeñas */
+    font-size: 14px; /* Reducir tamaño de fuente para botones */
+  }
 }
