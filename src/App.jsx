@@ -40,7 +40,6 @@ function App() {
     navigate("/ingresar");
   };
 
-  // Determinar si debe renderizar el encabezado basado en la ruta actual
   const shouldRenderHeader = !unauthenticatedRoutes.includes(location.pathname);
   const shouldRenderFooter = !unauthenticatedRoutes.includes(location.pathname);
 
@@ -54,7 +53,6 @@ function App() {
         const expiration = new Date(expirationTime).getTime();
 
         if (currentTime >= expiration && location.pathname !== "/ingresar") {
-          // Token ha expirado, eliminarlo del local storage
           localStorage.removeItem("token");
           localStorage.removeItem("expirationTime");
           navigate("/ingresar");
@@ -64,22 +62,19 @@ function App() {
           localStorage.removeItem("expirationTime");
         }
       } else {
-        // No hay token o expirationTime en el local storage
         return true;
       }
     };
 
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 400); // Simular una carga de 2 segundos
+    }, 400);
 
-    // Ejecutar checkExpirationTime cuando cambie la ubicación
     checkExpirationTime();
 
     return () => clearTimeout(timeout);
   }, [location.pathname, navigate]);
 
-  // Mostrar mensaje de acceso denegado
   useEffect(() => {
     if (showAccessDenied) {
       swal({

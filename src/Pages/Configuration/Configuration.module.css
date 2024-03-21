@@ -72,3 +72,41 @@
 .logOutButton:hover {
   background: #1274bb;
 }
+
+@media only screen and (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+
+  .sidebarContainer {
+    width: 100%;
+    padding: 0px;
+    min-height: 200px;
+  }
+
+  .renderContainer {
+    width: 100%;
+  }
+
+  .logOutContainer {
+    margin: 15px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+  }
+  .header span {
+    font-size: 24px;
+  }
+
+  .body span {
+    font-size: 16px;
+  }
+
+  .logOutButton {
+    margin-top: 20px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+}

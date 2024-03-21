@@ -1,9 +1,45 @@
 .cardsContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
   margin-top: 40px;
-  margin-left: 4%;
+}
+
+.cardContainer {
+  width: calc(30% - 20px); /* Calculamos el ancho para 3 elementos por fila */
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.cardImage {
+  width: 100%;
+  height: 195px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0; /* Agregamos un radio en la parte superior de la imagen */
+}
+
+.cardContainer h2 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24.2px;
+  text-align: center;
+  color: #212121;
+  padding: 10px;
+  background-color: #f0f0f0; /* Agregamos un fondo al título */
+  border-radius: 0 0 8px 8px; /* Agregamos un radio en la parte inferior del título */
+}
+
+@media only screen and (max-width: 768px) {
+  .cardsContainer {
+    justify-content: center; /* Centramos los elementos en pantallas pequeñas */
+  }
+
+  .cardContainer {
+    width: calc(50% - 20px); /* Calculamos el ancho para 2 elementos por fila */
+  }
 }

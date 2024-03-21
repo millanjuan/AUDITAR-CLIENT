@@ -5,3 +5,9 @@
   margin-left: 5%;
   width: 100%;
 }
+@media only screen and (max-width: 768px) {
+  .mainContainer {
+    margin-left: 0px;
+    padding: 30px;
+  }
+}

@@ -87,3 +87,60 @@
 .inputMatch {
   border-color: green;
 }
+
+@media only screen and (max-width: 768px) {
+  .header {
+    width: 100%;
+    padding-bottom: 30px;
+  }
+  .header span {
+    font-size: 25px;
+  }
+  .body {
+    flex-direction: column;
+  }
+
+  .leftContainer {
+    width: 100%;
+  }
+  .notEditablePhoto {
+    width: 200px;
+  }
+  .notPicture {
+    width: 200px;
+    align-items: center;
+  }
+
+  .iconContainer {
+    width: 80%;
+    height: 80%;
+    align-self: center;
+  }
+
+  .editablePhoto span,
+  .notEditablePhoto span {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .inputsContainer {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .inputContainer {
+    width: 100%;
+  }
+
+  .inputContainer span {
+    font-size: 16px;
+  }
+
+  .input {
+    width: 100%;
+    font-size: 15px;
+  }
+  .button {
+    align-self: center;
+  }
+}

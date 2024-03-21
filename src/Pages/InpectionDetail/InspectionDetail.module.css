@@ -441,3 +441,194 @@
   color: white;
   background-color: #002c5b;
 }
+
+@media only screen and (max-width: 768px) {
+  .mainContainer {
+    padding: 20px;
+  }
+  .navigation {
+    margin-left: 15px;
+    margin-top: 15px;
+    gap: 5px;
+    width: 80%;
+    padding-bottom: 20px;
+  }
+  .navigation span {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24.2px;
+    letter-spacing: 0em;
+    color: #757575;
+  }
+  .link {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24.2px;
+    letter-spacing: 0em;
+    text-decoration: none;
+    color: #757575;
+  }
+
+  .title {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .subtitle {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  .dataContainer {
+    width: 100%;
+    padding: 5% 0;
+    gap: 10px;
+  }
+
+  .inputContainer {
+    gap: 0px;
+  }
+  .inputContainer span {
+    font-size: 12px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .input {
+    width: 100%;
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .formContainer {
+    width: 100%;
+  }
+
+  .header {
+    width: 100%;
+  }
+
+  .categoryTitle {
+    font-size: 20px;
+    line-height: 29px;
+  }
+
+  .categoryImage {
+    height: 300px;
+  }
+
+  .headerAlert {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .categoryStatement {
+    width: 100%;
+    font-size: 14px;
+    padding-bottom: 50px;
+  }
+
+  .body {
+    width: 100%;
+    gap: 40px;
+  }
+  .questionContainer {
+    margin-top: 10px;
+  }
+  .question {
+    font-size: 14px;
+  }
+  .buttonsContainer {
+    margin-top: 20px;
+    margin-left: 5px;
+    gap: 10px;
+  }
+
+  .greenButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .redButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .blueButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .point {
+    font-size: 12px;
+  }
+
+  .negativeContainer {
+    margin-top: 20px;
+  }
+  .textArea {
+    font-size: 12px;
+  }
+
+  .footer {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .footerText {
+    font-size: 12px;
+    line-height: 20px;
+    padding: 10px;
+  }
+
+  .footerSpan {
+    margin-top: 40px;
+    font-size: 12px;
+  }
+
+  .finalInput {
+    width: 30px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .quizzButtons {
+    gap: 10px;
+  }
+  .observation {
+    margin-top: 20px;
+  }
+  .observationSpan {
+    font-size: 12px;
+  }
+  .inputIdentity {
+    width: 50%;
+    height: 40px;
+  }
+  .signTitle {
+    font-size: 12px;
+  }
+  .negativeContainer p {
+    font-size: 10px;
+  }
+  .inspectorSigns {
+    flex-direction: column;
+  }
+  .ownerSignContainer {
+    width: 100%;
+  }
+  .sendButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    text-align: center;
+  }
+  .icon {
+    font-size: 14px;
+  }
+  .exitButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    text-align: center;
+  }
+}

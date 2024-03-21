@@ -67,3 +67,33 @@
   flex-direction: row;
   justify-content: center;
 }
+
+@media only screen and (max-width: 768px) {
+  .header {
+    margin-top: 15px;
+  }
+
+  .title {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .body {
+    width: 100%;
+    padding: 20px 0;
+    gap: 30px;
+  }
+
+  .searchBarContainer {
+    width: 80%;
+  }
+
+  .cardsContainer {
+    margin-left: 0;
+    align-items: flex-start;
+  }
+
+  .paginationContainer {
+    width: 100%;
+  }
+}

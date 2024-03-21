@@ -209,6 +209,21 @@ const InspectionPdf = ({ inspection }) => {
                 )}
             </View>
           ))}
+        <View>
+          {inspection.days && (
+            <View style={styles.section}>
+              <Text style={styles.statement}>
+                Este control se llevó a cabo conforme a lo establecido por art.
+                14 de la ley 18.284 y por lo estipulado en el Código Alimentario
+                Argentino.
+              </Text>
+              <Text style={styles.question}>
+                Se establece un plazo de {inspection.days} días para aplicar las
+                medidas mencionadas en esta acta.
+              </Text>
+            </View>
+          )}
+        </View>
       </Page>
     </Document>
   );

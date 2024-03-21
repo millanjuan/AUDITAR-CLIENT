@@ -5,10 +5,10 @@ import { BsSend } from "react-icons/bs";
 import SignatureCanvas from "react-signature-canvas";
 import { validateForm } from "./validation";
 import Swal from "sweetalert2";
-import loading from "../../assets/loading.gif";
+import loading from "../../assets/loading3.gif";
 import { setFormData, setPdfData } from "../../redux/actions";
 import axios from "axios";
-import { Document, Page, PDFViewer, pdf } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import InspectionPdf from "../InspectionPdf/InspectionPdf";
 
 const cloudinaryCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -20,12 +20,17 @@ const Quizz = () => {
   const dispatch = useDispatch();
   //STATES
   const inspection = useSelector((state) => state.pdfData);
+  console.log(inspection);
   const category = useSelector((state) => state.category);
   const formData = useSelector((state) => state.formData);
-  const [pdfBlob, setPdfBlob] = useState(null);
-  const [pdf1, setPdf1] = useState(null);
+  const user = useSelector((state) => state.userData);
   const [days, setDays] = useState(null);
-  const [error, setError] = useState();
+  const [userData, setUserData] = useState({
+    clientEmail: user.email,
+    cellphone: user.cellphone,
+    ownerEmail: formData.email,
+    pdf: null,
+  });
   const [answers, setAnswers] = useState({
     data:
       category && category.form
@@ -45,7 +50,6 @@ const Quizz = () => {
   const inspectorSign1Ref = useRef();
   const inspectorSign2Ref = useRef();
   const ownerSignRef = useRef();
-  const mainContainerRef = useRef();
 
   useEffect(() => {
     setAnswers({
@@ -65,24 +69,21 @@ const Quizz = () => {
     setDays(e.target.value);
   };
 
+  const showLoading = (text) => {
+    Swal.fire({
+      title: text,
+      html: `<img src=${loading} style="width: 50px; height: 50px;" />`,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+    });
+  };
+
   const handleSaveSignatures = async () => {
     const showError = (message) => {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: message,
-      });
-    };
-
-    const showLoading = () => {
-      Swal.fire({
-        title: "Subiendo firmas...",
-        html: `<img src=${loading} style="width: 50px; height: 50px;" />`,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
       });
     };
 
@@ -123,7 +124,7 @@ const Quizz = () => {
       showError("Por favor completa las firmas obligatorias");
       return;
     }
-    showLoading();
+    showLoading("Subiendo firmas...");
     try {
       await Promise.all([
         uploadSignatureToCloudinary("inspectorSign1", inspectorSign1Ref),
@@ -188,17 +189,17 @@ const Quizz = () => {
       return updatedAnswers;
     });
   };
+  const showError = (error) => {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const showError = (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error,
-      });
-    };
-    const validationErrors = validateForm(answers, signatures);
+    const validationErrors = validateForm(answers, signatures, category);
     if (Object.keys(validationErrors).length === 0) {
       try {
         dispatch(
@@ -238,7 +239,6 @@ const Quizz = () => {
           ownerSign: signatures.ownerSign,
           days: days,
         };
-        console.log(updatedFormData);
         const response = await axios.post(
           `${backUrl}/inspection/new`,
           updatedFormData,
@@ -254,8 +254,6 @@ const Quizz = () => {
             icon: "success",
             text: "Inspección creada correctamente.",
           });
-          setPdf1(null);
-          setPdfBlob(null);
         } else {
           showError(
             "Hubo un problema al subir la inspección, intenta nuevamente."
@@ -268,27 +266,53 @@ const Quizz = () => {
         );
       }
     } else {
-      setError(validationErrors);
       showError("Por favor, completa correctamente todos los campos.");
     }
   };
 
   const handlePdf = async () => {
-    console.log(inspection);
+    if (!formData.form) {
+      showError(
+        "Debes completar el formulario y guardarlo para enviar el email."
+      );
+      return;
+    }
     const MyDocument = <InspectionPdf inspection={inspection} />;
     const blob = await pdf(MyDocument).toBlob();
-    setPdfBlob(blob);
-  };
-  const handleDownloadPdf = () => {
-    if (pdfBlob) {
-      const url = URL.createObjectURL(pdfBlob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "inspection.pdf";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const base64String = reader.result.split(",")[1];
+      // Enviar la cadena base64 al backend
+      showLoading("Enviando email...");
+      try {
+        const response = await axios.post(
+          `${backUrl}/email/inspection`,
+          { ...userData, pdf: base64String },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 201) {
+          Swal.close();
+          Swal.fire({
+            title: "¡Listo!",
+            icon: "success",
+            text: "Correo electrónico enviado con éxito.",
+          });
+        } else {
+          Swal.close();
+          showError("Hubo un problema, intenta nuevamente.");
+        }
+      } catch (error) {
+        console.error("Error al enviar el email:", error);
+        Swal.close();
+        showError("Hubo un problema, intenta nuevamente.");
+      }
+    };
+
+    reader.readAsDataURL(blob);
   };
 
   return (
@@ -401,18 +425,16 @@ const Quizz = () => {
                 <SignatureCanvas
                   ref={inspectorSign1Ref}
                   canvasProps={{
-                    width: 400,
-                    height: 200,
-                    className: "sigCanvas",
+                    className: styles.signCanvas,
                   }}
                 />
-                <button
-                  onClick={() => inspectorSign1Ref.current.clear()}
-                  className={styles.clearButton}
-                >
-                  Limpiar
-                </button>
               </div>
+              <button
+                onClick={() => inspectorSign1Ref.current.clear()}
+                className={styles.clearButton}
+              >
+                Limpiar
+              </button>
             </div>
             <div className={styles.signContainer}>
               <span className={styles.signTitle}>
@@ -422,9 +444,7 @@ const Quizz = () => {
                 <SignatureCanvas
                   ref={inspectorSign2Ref}
                   canvasProps={{
-                    width: 400,
-                    height: 200,
-                    className: "sigCanvas",
+                    className: styles.signCanvas,
                   }}
                 />
                 <button
@@ -445,9 +465,7 @@ const Quizz = () => {
                 <SignatureCanvas
                   ref={ownerSignRef}
                   canvasProps={{
-                    width: 400,
-                    height: 200,
-                    className: "sigCanvas",
+                    className: styles.signCanvas,
                   }}
                 />
                 <button
@@ -490,9 +508,6 @@ const Quizz = () => {
           </button>
           <button className={styles.saveButton} onClick={handleSubmit}>
             Finalizar
-          </button>
-          <button className={styles.saveButton} onClick={handleDownloadPdf}>
-            DESCARGAR
           </button>
         </div>
       </div>

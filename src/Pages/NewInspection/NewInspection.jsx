@@ -4,11 +4,12 @@ import Quizz from "../../Components/Quizz/Quizz";
 import Category from "../../Components/Category/Category";
 import { setFormData } from "../../redux/actions";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { validateForm } from "./validation";
 import { useSelector } from "react-redux";
 import { setInspectionState } from "../../redux/actions";
+import Swal from "sweetalert2";
 
 const form = "form";
 const category = "category";
@@ -16,8 +17,14 @@ const quizz = "quizz";
 
 const NewInspection = () => {
   const categoryName = useSelector((state) => state.category.name);
-  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.userData);
   const inspectionState = useSelector((state) => state.inspectionState);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [showAccessDenied, setShowAccessDenied] = useState(false);
+
   const [identity2, setIdentity2] = useState({
     type: "",
     number: "",
@@ -35,10 +42,31 @@ const NewInspection = () => {
   });
 
   const [errors, setErrors] = useState({});
-
   useEffect(() => {
     dispatch(setInspectionState("form"));
-  }, [dispatch]);
+    if (!userData.email || !userData.cellphone) {
+      setShowAccessDenied(true);
+    }
+  }, [userData.email, userData.cellphone, setInspectionState, dispatch]);
+  const handleCloseAccessDenied = () => {
+    setShowAccessDenied(false);
+    navigate("/configuracion");
+  };
+
+  useEffect(() => {
+    if (showAccessDenied) {
+      Swal.fire({
+        title: "Acceso denegado",
+        text: "Para realizar una inspección, debes actualizar tus datos de contacto.",
+        icon: "warning",
+        buttons: {
+          confirm: "OK",
+        },
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      }).then(() => handleCloseAccessDenied());
+    }
+  }, [showAccessDenied]);
 
   const handleSetState = (value) => {
     dispatch(setInspectionState(value));
@@ -95,7 +123,7 @@ const NewInspection = () => {
                 Inicio
               </Link>
               <IoIosArrowForward className={styles.icon} />
-              <span>Nueva Inspección</span>
+              <span className={styles.navSpan}>Nueva Inspección</span>
             </div>
             <div className={styles.header}>
               <span className={styles.title}>Formulario</span>
@@ -305,7 +333,7 @@ const NewInspection = () => {
                 Nueva Inspección
               </span>
               <IoIosArrowForward className={styles.icon} />
-              <span>Rubros</span>
+              <span className={styles.navSpan}>Rubros</span>
             </div>
             <Category />
           </div>
@@ -333,7 +361,7 @@ const NewInspection = () => {
                 Rubros
               </span>
               <IoIosArrowForward className={styles.icon} />
-              <span>Inspección: {categoryName}</span>
+              <span className={styles.navSpan}>Inspección: {categoryName}</span>
             </div>
             <Quizz />
           </div>

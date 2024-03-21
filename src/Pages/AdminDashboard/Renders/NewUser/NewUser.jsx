@@ -60,6 +60,15 @@ const NewUser = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        await axios.post(
+          "http://localhost:3001/email/welcome",
+          { to: userData.email },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         Swal.fire({
           icon: "success",
           title: "Usuario creado con éxito",

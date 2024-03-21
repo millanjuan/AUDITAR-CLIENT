@@ -1,11 +1,19 @@
 .cardContainer {
-  width: 299px;
+  width: calc(33.33% - 40px);
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease;
-  height: 270px;
-  margin: 30px 50px 0px 50px;
+  margin: 15px;
   cursor: pointer;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+
+.cardContainer.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .cardContainer:hover {
@@ -13,22 +21,42 @@
 }
 
 .cardImage {
-  width: 299px;
-  height: 195px;
+  width: 100%;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .cardContainer h2 {
   font-weight: 600;
   font-size: 20px;
-  line-height: 24.2px;
+  line-height: 24px;
   text-align: center;
   color: #212121;
+  padding: 10px;
+  border-radius: 0 0 8px 8px;
 }
 
 .wrapperLinks {
   text-decoration: none;
   color: inherit;
+}
+
+@media only screen and (max-width: 800px) {
+  .cardContainer {
+    width: 80%;
+    margin: 15px;
+  }
+
+  .cardImage {
+    height: 200px;
+    margin-bottom: 5px;
+  }
+
+  .cardContainer h2 {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 8px;
+  }
 }

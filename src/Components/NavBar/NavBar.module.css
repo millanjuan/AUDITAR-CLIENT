@@ -38,3 +38,15 @@
 .link:hover {
   background-color: rgba(0, 0, 0, 0.069);
 }
+
+@media only screen and (max-width: 900px) {
+  .navItem {
+    margin: 5px 0; /* Reducir el espaciado vertical en pantallas pequeñas */
+    padding: 0px;
+  }
+
+  .link {
+    padding: 8px 15px; /* Reducir el espaciado interno en pantallas pequeñas */
+    font-size: 16px; /* Reducir el tamaño de fuente en pantallas pequeñas */
+  }
+}

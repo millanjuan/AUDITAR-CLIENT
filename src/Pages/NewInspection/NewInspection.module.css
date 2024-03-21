@@ -105,6 +105,8 @@
   display: flex;
   width: 100%;
   justify-content: space-around;
+  gap: 20px;
+  padding: 10px;
 }
 
 .inputContainer {
@@ -217,4 +219,113 @@
   display: flex;
   width: 90%;
   justify-content: center;
+}
+
+@media only screen and (max-width: 800px) {
+  .container {
+    margin: 10px;
+  }
+  .render {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .navigation {
+    width: 100%;
+    margin-left: 0px;
+  }
+  .link {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .navSpan {
+    font-size: 14px !important;
+  }
+  .icon {
+    font-size: 12px;
+  }
+
+  .header .title {
+    font-size: 32px;
+    line-height: 39px;
+  }
+
+  .header .subtitle {
+    font-size: 20px;
+    line-height: 24px;
+    margin-top: 10px;
+  }
+
+  .formContainer {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .inputContainer span {
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .input {
+    width: 100%;
+    font-size: 16px;
+    height: 40px;
+    padding-left: 10px;
+  }
+
+  .select {
+    width: 100%;
+    font-size: 16px;
+    height: 40px;
+    padding-left: 5px;
+  }
+
+  .identityContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input2 {
+    width: 100%;
+    font-size: 16px;
+    height: 40px;
+    padding-left: 10px;
+  }
+
+  .formButtonContainer {
+    padding: 20px;
+  }
+
+  .button {
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  .errors {
+    font-size: 13px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .navigation {
+    width: 100%;
+  }
+  .link {
+    font-size: 10px;
+    line-height: 20px;
+  }
+  .navSpan {
+    font-size: 10px !important;
+  }
+  .icon {
+    font-size: 10px;
+  }
 }

@@ -6,13 +6,29 @@ import { useParams } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { BsSend } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
+import loading from "../../assets/loading3.gif";
+import InspectionPdf from "../../Components/InspectionPdf/InspectionPdf";
+import { pdf } from "@react-pdf/renderer";
+
+const backUrl = import.meta.env.VITE_BACK_URL;
 
 const InspectionDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const inspection = useSelector((state) => state.inspectionDetail);
-  const navigate = useNavigate();
+  console.log(inspection);
+  const user = useSelector((state) => state.userData);
+
+  const userData = {
+    clientEmail: user.email,
+    cellphone: user.cellphone,
+    ownerEmail: inspection.email,
+    pdf: null,
+  };
 
   useEffect(() => {
     dispatch(getInspectionById(id, token));
@@ -21,6 +37,63 @@ const InspectionDetail = () => {
   const handleExit = () => {
     navigate("/historial");
   };
+
+  const showError = (error) => {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error,
+    });
+  };
+
+  const showLoading = (text) => {
+    Swal.fire({
+      title: text,
+      html: `<img src=${loading} style="width: 50px; height: 50px;" />`,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+    });
+  };
+
+  const handlePdf = async () => {
+    const MyDocument = <InspectionPdf inspection={inspection} />;
+    const blob = await pdf(MyDocument).toBlob();
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const base64String = reader.result.split(",")[1];
+      // Enviar la cadena base64 al backend
+      showLoading("Enviando email...");
+      try {
+        const response = await axios.post(
+          `${backUrl}/email/inspection`,
+          { ...userData, pdf: base64String },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 201) {
+          Swal.close();
+          Swal.fire({
+            title: "¡Listo!",
+            icon: "success",
+            text: "Correo electrónico enviado con éxito.",
+          });
+        } else {
+          Swal.close();
+          showError("Hubo un problema, intenta nuevamente.");
+        }
+      } catch (error) {
+        console.error("Error al enviar el email:", error);
+        Swal.close();
+        showError("Hubo un problema, intenta nuevamente.");
+      }
+    };
+
+    reader.readAsDataURL(blob);
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.navigation}>
@@ -51,7 +124,7 @@ const InspectionDetail = () => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <span>Nombre y apellido del titular</span>
+            <span>Titular</span>
             <input
               type="text"
               className={styles.input}
@@ -209,7 +282,7 @@ const InspectionDetail = () => {
             <div className={styles.inspectorSigns}>
               <div className={styles.signContainer}>
                 <span className={styles.signTitle}>
-                  Firma del inspector designado (*)
+                  Firma del inspector designado
                 </span>
                 <img
                   src={inspection.inspectorSign1}
@@ -217,23 +290,25 @@ const InspectionDetail = () => {
                   alt="inspectorSign1"
                 />
               </div>
-              <div className={styles.signContainer}>
-                <span className={styles.signTitle}>
-                  Firma del inspector designado Nº2
-                </span>
-                {inspection.inspectorSign2 && (
-                  <img
-                    src={inspection.sign}
-                    alt="inpectorSign2"
-                    className={styles.inspectorSign2}
-                  />
-                )}
-              </div>
+              {inspection.inspectorSign2 && (
+                <div className={styles.signContainer}>
+                  <span className={styles.signTitle}>
+                    Firma del inspector designado Nº2
+                  </span>
+                  {inspection.inspectorSign2 && (
+                    <img
+                      src={inspection.sign}
+                      alt="inpectorSign2"
+                      className={styles.inspectorSign2}
+                    />
+                  )}
+                </div>
+              )}
             </div>
             <div className={styles.ownerSignContainer}>
               <div className={styles.signContainer}>
                 <span className={styles.signTitle}>
-                  Firma del titular del comercio (*)
+                  Firma del titular del comercio
                 </span>
                 <img
                   src={inspection.ownerSign}
@@ -261,7 +336,7 @@ const InspectionDetail = () => {
             </span>
           </div>
           <div className={styles.quizzButtons}>
-            <button className={styles.sendButton}>
+            <button className={styles.sendButton} onClick={handlePdf}>
               <BsSend className={styles.icon} />
               Reenviar correo
             </button>

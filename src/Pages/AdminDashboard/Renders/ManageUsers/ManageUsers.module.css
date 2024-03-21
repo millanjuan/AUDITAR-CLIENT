@@ -60,3 +60,11 @@
 .deleteButton:active {
   transform: translateY(1px);
 }
+.paginationContainer {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  z-index: 1000;
+}

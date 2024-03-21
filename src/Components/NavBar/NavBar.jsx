@@ -22,9 +22,6 @@ const NavBar = () => {
         <Link to="/configuracion" className={styles.link}>
           <li className={styles.navItem}>Configuracion</li>
         </Link>
-        <Link to="/contacto" className={styles.link}>
-          <li className={styles.navItem}>Contáctanos</li>
-        </Link>
         {rol === "admin" && (
           <Link to="/panel-de-administrador" className={styles.link}>
             <li className={styles.navItem}>Panel de Administrador</li>
