@@ -123,7 +123,6 @@ const PersonalData = () => {
         },
       })
       .then((response) => {
-        console.log("User data updated successfully:", response.data);
         setUserInfo(response.data); // Actualizar el estado con los datos actualizados
         setEditablePhoto(false); // Desactivar la edición de la foto
         window.location.reload();
