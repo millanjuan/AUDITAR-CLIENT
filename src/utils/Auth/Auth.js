@@ -79,7 +79,7 @@ export async function login(username, password) {
       throw new Error(response.data.message || "Error de inicio de sesión");
     }
   } catch (error) {
-    console.error("Error de inicio de sesión:", error);
+    console.error("Error de inicio de sesión:", error.message);
     throw error;
   }
 }
